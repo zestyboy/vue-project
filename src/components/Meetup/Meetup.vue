@@ -87,8 +87,3 @@ export default {
   }
 };
 </script>
-
-// this is a test
-// okay then
-// bye
-// buddy

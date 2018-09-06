@@ -14,7 +14,7 @@ export default {
     registerUserToMeetup(state, meetupId) {
       state.user.registeredMeetups.push(meetupId);
     },
-    unregisterUserFromMeetup(state, meetupId) {
+    unregisterUser(state, meetupId) {
       state.user.registeredMeetups.splice(
         state.user.registeredMeetups.indexOf(meetupId),
         1
@@ -73,13 +73,16 @@ export default {
     },
     registerUserToMeetup({ commit, getters }, meetup) {
       // add {userId} to user node in firebase
+      commit("setLoading", true);
       const meetupId = meetup.id;
       const userId = getters.user.id;
       let registerObject = {};
       registerObject[
+        // write {meetupId: true} to '/user/userID' in firebase
         "users/" + userId + "/registeredMeetups/" + meetupId
       ] = true;
       registerObject[
+        // write {userID: true} to '/meetups/meetupId/registeredUsers' in firebase
         "meetups/" + meetupId + "/registeredUsers/" + userId
       ] = true;
       firebase
@@ -87,14 +90,45 @@ export default {
         .ref()
         .update(registerObject)
         .then(() => {
+          // commit a mutation that adds {meetupId} to [registeredMeetups] in app state
           commit("registerUserToMeetup", meetupId);
+          commit("setLoading", false);
         })
         .catch(error => {
           console.log(error);
+          commit("setLoading", false);
         });
-      // write {meetupId: true} to '/user/userID' in firebase
-      // write {userID: true} to '/meetups/meetupId/registeredUsers' in firebase
-      // commit a mutation that adds {meetupId} to [registeredMeetups] in app state
+    },
+    unregisterUser({ commit, getters }, meetup) {
+      // remove entries in firebase
+      commit("setLoading", true);
+      const meetupId = meetup.id;
+      const userId = getters.user.id;
+      let unregisterObject = {};
+      unregisterObject[
+        // write {meetupId: true} to '/user/userID' in firebase
+        "users/" + userId + "/registeredMeetups/" + meetupId
+      ] = null;
+      unregisterObject[
+        // write {userID: true} to '/meetups/meetupId/registeredUsers' in firebase
+        "meetups/" + meetupId + "/registeredUsers/" + userId
+      ] = null;
+      firebase
+        .database()
+        .ref()
+        .update(unregisterObject)
+        .then(() => {
+          // commit a mutation that adds {meetupId} to [registeredMeetups] in app state
+          commit("unregisterUser", meetupId);
+          commit("setLoading", false);
+        })
+        .catch(error => {
+          console.log(error);
+          commit("setLoading", false);
+        });
+      // {userId} from meetups node
+      // {meetupId} from users node
+      // remove [meetupId] from [registeredMeetup] user state (commit mutation)
     }
   },
   getters: {

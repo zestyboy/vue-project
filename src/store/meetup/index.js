@@ -159,7 +159,7 @@ export default {
           console.log(error);
           commit("setLoading", false);
         });
-    },
+    }
     // registerUser({ commit, getters }, meetup) {
     //   // send user id to FB meetup id
     //   // add meetup id to user registered meetup array
@@ -175,21 +175,6 @@ export default {
     //       console.log(error);
     //     });
     // },
-    unregisterUser({ commit, getters }, meetup) {
-      console.log("hi");
-      commit("unregisterUserFromMeetup", meetup.id);
-      // firebase
-      //   .database()
-      //   .ref("meetups")
-      //   .child(meetup.id + "/registeredUsers")
-      //   .remove(getters.user.id)
-      //   .then(() => {
-      //     commit("unregisterUserFromMeetup", meetup.id);
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
-    } // remove function call not working
   },
   getters: {
     loadedMeetups(state) {

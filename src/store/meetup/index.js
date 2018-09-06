@@ -36,14 +36,14 @@ export default {
       // edit a specific meetup
       // update only the values that have changed
       // ie, lookup meetup, modify appropriate property with corresponding editd value
-    },
-    registerUsertToMeetup(state, payload) {
-      const meetupToEdit = state.loadedMeetups.find(meetup => {
-        return meetup.id === payload.id;
-      });
-      meetupToEdit.registeredUsers.push(payload);
-      // this mutation probably isn't necessary
     }
+    // registerUsertToMeetup(state, payload) {
+    //   const meetupToEdit = state.loadedMeetups.find(meetup => {
+    //     return meetup.id === payload.id;
+    //   });
+    //   meetupToEdit.registeredUsers.push(payload);
+    //   // this mutation probably isn't necessary
+    // }
   },
   actions: {
     createMeetup({ commit, getters }, payload) {
@@ -160,21 +160,21 @@ export default {
           commit("setLoading", false);
         });
     },
-    registerUser({ commit, getters }, meetup) {
-      // send user id to FB meetup id
-      // add meetup id to user registered meetup array
-      firebase
-        .database()
-        .ref("meetups")
-        .child(meetup.id + "/registeredUsers")
-        .push(getters.user.id) // this keeps adding user id even if it's there already!
-        .then(() => {
-          commit("registerUserToMeetup", meetup.id);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    // registerUser({ commit, getters }, meetup) {
+    //   // send user id to FB meetup id
+    //   // add meetup id to user registered meetup array
+    //   firebase
+    //     .database()
+    //     .ref("meetups")
+    //     .child(meetup.id + "/registeredUsers")
+    //     .push(getters.user.id) // this keeps adding user id even if it's there already!
+    //     .then(() => {
+    //       commit("registerUserToMeetup", meetup.id);
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // },
     unregisterUser({ commit, getters }, meetup) {
       console.log("hi");
       commit("unregisterUserFromMeetup", meetup.id);

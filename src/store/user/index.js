@@ -70,6 +70,31 @@ export default {
     logOut: function({ commit }) {
       firebase.auth().signOut();
       commit("setUser", null);
+    },
+    registerUserToMeetup({ commit, getters }, meetup) {
+      // add {userId} to user node in firebase
+      const meetupId = meetup.id;
+      const userId = getters.user.id;
+      let registerObject = {};
+      registerObject[
+        "users/" + userId + "/registeredMeetups/" + meetupId
+      ] = true;
+      registerObject[
+        "meetups/" + meetupId + "/registeredUsers/" + userId
+      ] = true;
+      firebase
+        .database()
+        .ref()
+        .update(registerObject)
+        .then(() => {
+          commit("registerUserToMeetup", meetupId);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      // write {meetupId: true} to '/user/userID' in firebase
+      // write {userID: true} to '/meetups/meetupId/registeredUsers' in firebase
+      // commit a mutation that adds {meetupId} to [registeredMeetups] in app state
     }
   },
   getters: {

@@ -76,7 +76,7 @@ export default {
       // send id of meetup to registeredMeetups array in user store
       // or
       // dispatch action in meetup store to (1) add user id to meetup in FB (2) update user state
-      this.$store.dispatch("registerUser", this.meetup);
+      this.$store.dispatch("registerUserToMeetup", this.meetup);
     },
     unregister() {
       this.$store.dispatch("unregisterUser", this.meetup);

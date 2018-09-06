@@ -38,6 +38,10 @@
             <p>{{userRegistered}}</p>
           </v-card-actions>
         </v-card>
+        <v-alert :value="alertValue"
+          :type="alertType">
+          {{alertMessage}}
+        </v-alert>
       </v-flex>
     </v-layout>
   </v-container>
@@ -48,6 +52,13 @@ import EditMeetup from "./Edit/EditMeetup.vue";
 
 export default {
   props: ["id"],
+  data() {
+    return {
+      alertValue: false,
+      alertType: "success",
+      alertMessage: ""
+    };
+  },
   computed: {
     meetup() {
       return this.$store.getters.loadedMeetup(this.id);
@@ -77,9 +88,21 @@ export default {
       // or
       // dispatch action in meetup store to (1) add user id to meetup in FB (2) update user state
       this.$store.dispatch("registerUserToMeetup", this.meetup);
+      this.alertValue = true;
+      this.alertType = "success";
+      this.alertMessage = "You are now registered!";
+      setTimeout(() => {
+        this.alertValue = false;
+      }, 3000);
     },
     unregister() {
       this.$store.dispatch("unregisterUser", this.meetup);
+      this.alertValue = true;
+      this.alertType = "info";
+      this.alertMessage = "You are now unregistered!";
+      setTimeout(() => {
+        this.alertValue = false;
+      }, 3000);
     }
   },
   components: {

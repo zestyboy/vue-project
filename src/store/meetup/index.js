@@ -119,7 +119,6 @@ export default {
               time: databaseReturn[key].time
             });
           }
-          console.dir(meetups);
           commit("setLoadedMeetups", meetups);
           commit("setLoading", false);
         })

@@ -19,6 +19,9 @@ export default {
         state.user.registeredMeetups.indexOf(meetupId),
         1
       );
+    },
+    loadRegisteredMeetups(state, payload) {
+      state.user.registeredMeetups = payload;
     }
   },
   actions: {
@@ -129,6 +132,32 @@ export default {
       // {userId} from meetups node
       // {meetupId} from users node
       // remove [meetupId] from [registeredMeetup] user state (commit mutation)
+    },
+    loadRegisteredMeetups({ commit, getters }) {
+      commit("setLoading", true);
+      console.log("hooray!!");
+      firebase
+        .database()
+        .ref("users/" + "RHevemejabUChG0So21OPdZ9HAx1" + "/registeredMeetups")
+        .once("value")
+        .then(data => {
+          commit("setLoading", true);
+          const databaseReturn = data.val();
+          console.log(databaseReturn);
+          const registeredMeetups = [];
+          for (let key in databaseReturn) {
+            registeredMeetups.push(key);
+          }
+          console.log("yoyoyo");
+          console.log(registeredMeetups);
+          commit("loadRegisteredMeetups", registeredMeetups);
+          // commit("setLoadedMeetups", registeredMeetups);
+          // commit("setLoading", false);
+        })
+        .catch(error => {
+          // console.log(error);
+          // commit("setLoading", false);
+        });
     }
   },
   getters: {

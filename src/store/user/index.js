@@ -151,12 +151,13 @@ export default {
           console.log("yoyoyo");
           console.log(registeredMeetups);
           commit("loadRegisteredMeetups", registeredMeetups);
+          commit("setLoading", false);
           // commit("setLoadedMeetups", registeredMeetups);
           // commit("setLoading", false);
         })
         .catch(error => {
-          // console.log(error);
-          // commit("setLoading", false);
+          console.log(error);
+          commit("setLoading", false);
         });
     }
   },

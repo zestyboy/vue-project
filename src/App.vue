@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <v-toolbar class="blue lighten-4">
+    <v-toolbar app
+      class="blue lighten-4">
       <v-toolbar-side-icon @click="sideNav = !sideNav"
         class="hidden-sm-and-up"></v-toolbar-side-icon>
       <v-toolbar-title>
@@ -27,7 +28,8 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-navigation-drawer temporary
+    <v-navigation-drawer app
+      temporary
       v-model="sideNav">
       <v-list>
         <v-list-tile v-for="item in menuItems"
@@ -48,9 +50,17 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <main>
-      <router-view></router-view>
-    </main>
+    <v-content>
+      <v-container fluid
+        fill-height>
+        <v-layout justify-center
+          align-center>
+          <v-flex xs10>
+            <router-view></router-view>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
